@@ -152,19 +152,16 @@ public class History extends AppCompatActivity
 
         if (id == R.id.nav_search) {
             // Handle the camera action
-            Intent search= new Intent(History.this, Search.class);
+            Intent search = new Intent(History.this, Search.class);
             startActivity(search);
-        }else if(id == R.id.nav_home){
-            Intent home= new Intent(History.this,MainActivity.class);
+        } else if (id == R.id.nav_home) {
+            Intent home = new Intent(History.this, MainActivity.class);
             startActivity(home);
-        }else if(id == R.id.nav_history){
-            Intent home= new Intent(History.this,History.class);
+        } else if (id == R.id.nav_history) {
+            Intent historyIntent = new Intent(History.this, History.class);
+            startActivity(historyIntent);
 
-            startActivity(home);
         }
-
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

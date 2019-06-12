@@ -1,7 +1,9 @@
 package com.example.afinal;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity
         load();
         load();
     }
+
 
     void get() {
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
@@ -146,22 +149,16 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_search) {
             // Handle the camera action
-            Intent search= new Intent(MainActivity.this, Search.class);
+            Intent search = new Intent(MainActivity.this, Search.class);
             startActivity(search);
-        }else if(id == R.id.nav_home){
-            Intent home= new Intent(MainActivity.this,MainActivity.class);
+        } else if (id == R.id.nav_home) {
+            Intent home = new Intent(MainActivity.this, MainActivity.class);
             startActivity(home);
-        }else if(id == R.id.nav_history){
-            Intent home= new Intent(MainActivity.this,History.class);
-            SharedPreferences gameSettings = getSharedPreferences("MyGamePreferences", MODE_PRIVATE);
-            SharedPreferences.Editor prefEditor = gameSettings.edit();
-            prefEditor.putString("history", "test");
-            prefEditor.commit();
-            startActivity(home);
+        } else if (id == R.id.nav_history) {
+            Intent historyIntent = new Intent(MainActivity.this, History.class);
+            startActivity(historyIntent);
+
         }
-
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

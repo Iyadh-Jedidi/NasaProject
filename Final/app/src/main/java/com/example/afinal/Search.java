@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -31,7 +32,7 @@ import org.json.JSONObject;
 
 public class Search extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    Button loadBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +40,9 @@ public class Search extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Search");
         setSupportActionBar(toolbar);
+
+
+
 
 
 
@@ -50,40 +54,43 @@ public class Search extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        get();
-        load();
-        load();
+
     }
     @Override
     public void onResume(){
         super.onResume();
-        get();
-        load();
-        load();
+
     }
     @Override
     public void onStart(){
         super.onStart();
-        get();
-        load();
-        load();
+
     }
 
     Category catog=new Category();
     String history="";
     public void search( View view){
         get();
-        load();
-        load();
+
     }
 
+    //get the informaion from API
     void get() {
         RequestQueue requestQueue = Volley.newRequestQueue(Search.this);
         View contentView =findViewById(R.id.test);
         EditText t = contentView.findViewById(R.id.search);
-        String search= t.getText().toString();
-        if (search !=""){
-            history+="\n"+search;
+        String search;
+        search= t.getText().toString();
+
+            history+=search+"\n";
+            SQLiteDatabase myDB = openOrCreateDatabase("my.db", MODE_PRIVATE, null);
+            myDB.execSQL(
+                    "CREATE TABLE IF NOT EXISTS history (description VARCHAR(200))"
+            );
+            ContentValues row1 = new ContentValues();
+            row1.put("description", history);
+            myDB.insert("history", null, row1);
+            history="";
             String url = "https://genelab-data.ndc.nasa.gov/genelab/data/search?term="+search+"&type=nih_geo_gse";
 
 
@@ -98,6 +105,16 @@ public class Search extends AppCompatActivity
                                     JSONObject c = hits2.getJSONObject(0);
                                     JSONObject b = c.getJSONObject("_source");
                                     catog.setExplanation((String) b.get("Study Description"));
+                                    System.out.println("3malet recherche");
+                                    if (catog.getExplanation() != null || catog.getExplanation() != ""){
+                                        load();
+                                    }
+                                    else{
+                                        catog.setExplanation("No data found");
+                                        load();
+                                    }
+
+
                                 }
                                 else{
                                     catog.setExplanation("No data found");
@@ -116,21 +133,15 @@ public class Search extends AppCompatActivity
                     });
             requestQueue.add(jsonObjectRequest);
 
-        }else{
-            catog.setExplanation("No data found");
-        }
+
 
     }
 
+    // load information in the TextView
     void  load(){
-        View contentView =findViewById(R.id.test);
-        TextView t = contentView.findViewById(R.id.description);
-        t.setText(catog.getExplanation());
-        System.out.println("fema 7aja" +t.getText());
-
-
-
-
+        View contentViewLoad =findViewById(R.id.test);
+        TextView tLoad = contentViewLoad.findViewById(R.id.description);
+        tLoad.setText(catog.getExplanation());
     }
 
     @Override
@@ -179,15 +190,10 @@ public class Search extends AppCompatActivity
             Intent home= new Intent(Search.this,MainActivity.class);
             startActivity(home);
         }else if(id == R.id.nav_history){
-            Intent home= new Intent(Search.this,History.class);
-            SQLiteDatabase myDB = openOrCreateDatabase("my.db", MODE_PRIVATE, null);
-            myDB.execSQL(
-                    "CREATE TABLE IF NOT EXISTS history (description VARCHAR(200))"
-            );
-            ContentValues row1 = new ContentValues();
-            row1.put("description", history);
-            myDB.insert("history", null, row1);
-            startActivity(home);
+            Intent historyIntent= new Intent(Search.this,History.class);
+
+            startActivity(historyIntent);
+
         }
 
 

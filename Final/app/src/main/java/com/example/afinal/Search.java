@@ -82,56 +82,57 @@ public class Search extends AppCompatActivity
         String search;
         search= t.getText().toString();
 
-            history+=search+"\n";
-            SQLiteDatabase myDB = openOrCreateDatabase("my.db", MODE_PRIVATE, null);
-            myDB.execSQL(
-                    "CREATE TABLE IF NOT EXISTS history (description VARCHAR(200))"
-            );
-            ContentValues row1 = new ContentValues();
-            row1.put("description", history);
-            myDB.insert("history", null, row1);
-            history="";
-            String url = "https://genelab-data.ndc.nasa.gov/genelab/data/search?term="+search+"&type=nih_geo_gse";
+        history+=search+"\n";
+        SQLiteDatabase myDB = openOrCreateDatabase("my.db", MODE_PRIVATE, null);
+        myDB.execSQL(
+                "CREATE TABLE IF NOT EXISTS history (description VARCHAR(200))"
+        );
+        ContentValues row1 = new ContentValues();
+        row1.put("description", history);
+        myDB.insert("history", null, row1);
+        history="";
+        String url = "https://genelab-data.ndc.nasa.gov/genelab/data/search?term="+search+"&type=nih_geo_gse";
 
 
-            JsonObjectRequest jsonObjectRequest= new JsonObjectRequest(Request.Method.GET,url,null,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            try{
-                                JSONObject hits1 = response.getJSONObject("hits");
-                                JSONArray hits2= hits1.getJSONArray("hits");
-                                if (hits2.length() != 0) {
-                                    JSONObject c = hits2.getJSONObject(0);
-                                    JSONObject b = c.getJSONObject("_source");
+        JsonObjectRequest jsonObjectRequest= new JsonObjectRequest(Request.Method.GET,url,null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try{
+                            JSONObject hits1 = response.getJSONObject("hits");
+                            JSONArray hits2= hits1.getJSONArray("hits");
+                            if (hits2.length() != 0) {
+                                JSONObject c = hits2.getJSONObject(0);
+                                JSONObject b = c.getJSONObject("_source");
+
+                                System.out.println("3malet recherche");
+                                if (catog.getExplanation() != null || catog.getExplanation() != ""){
                                     catog.setExplanation((String) b.get("Study Description"));
-                                    System.out.println("3malet recherche");
-                                    if (catog.getExplanation() != null || catog.getExplanation() != ""){
-                                        load();
-                                    }
-                                    else{
-                                        catog.setExplanation("No data found");
-                                        load();
-                                    }
-
-
+                                    load();
                                 }
                                 else{
                                     catog.setExplanation("No data found");
+                                    load();
                                 }
 
-                            }catch(Exception e){
-                                System.out.println(e.getMessage());
+
+                            }
+                            else{
+                                catog.setExplanation("No data found");
                             }
 
+                        }catch(Exception e){
+                            System.out.println(e.getMessage());
                         }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error)
-                        {}
-                    });
-            requestQueue.add(jsonObjectRequest);
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error)
+                    {}
+                });
+        requestQueue.add(jsonObjectRequest);
 
 
 
@@ -194,6 +195,9 @@ public class Search extends AppCompatActivity
 
             startActivity(historyIntent);
 
+        }else if(id == R.id.nav_rover) {
+            Intent rover = new Intent(Search.this, Rover.class);
+            startActivity(rover);
         }
 
 

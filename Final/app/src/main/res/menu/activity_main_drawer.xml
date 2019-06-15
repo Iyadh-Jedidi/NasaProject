@@ -14,8 +14,12 @@
             android:title="Search" />
 
         <item
-            android:id="@+id/nav_history"
-            android:title="History" />
+        android:id="@+id/nav_history"
+        android:title="History" />
+
+        <item
+            android:id="@+id/nav_rover"
+            android:title="Mars Rover" />
 
     </group>
 

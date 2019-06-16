@@ -86,15 +86,13 @@ public class History extends AppCompatActivity
 
     void get() {
         //data base
-        Intent intent = getIntent();
-        String his= intent.getStringExtra("history");
         SQLiteDatabase myDB = openOrCreateDatabase("my.db", MODE_PRIVATE, null);
 
 
         Cursor myCursor = myDB.rawQuery("select description from history", null);
         String description="";
         while(myCursor.moveToNext()) {
-             description += myCursor.getString(0);
+            description += myCursor.getString(0);
         }
 
 
@@ -161,9 +159,14 @@ public class History extends AppCompatActivity
             Intent historyIntent = new Intent(History.this, History.class);
             startActivity(historyIntent);
 
+        }else if(id == R.id.nav_rover) {
+            Intent rover = new Intent(History.this, Rover.class);
+            startActivity(rover);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 }
+
+

@@ -14,6 +14,9 @@
         <activity android:name=".Search"
             android:launchMode="singleInstance"
             />
+        <activity android:name=".Rover"
+            android:launchMode="singleInstance"
+            />
         <activity android:name=".History"
             />
         <activity

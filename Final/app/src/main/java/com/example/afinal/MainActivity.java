@@ -158,6 +158,9 @@ public class MainActivity extends AppCompatActivity
             Intent historyIntent = new Intent(MainActivity.this, History.class);
             startActivity(historyIntent);
 
+        }else if(id == R.id.nav_rover) {
+            Intent rover = new Intent(MainActivity.this, Rover.class);
+            startActivity(rover);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

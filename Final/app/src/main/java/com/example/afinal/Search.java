@@ -82,15 +82,15 @@ public class Search extends AppCompatActivity
         String search;
         search= t.getText().toString();
 
-        history+=search+"\n";
-        SQLiteDatabase myDB = openOrCreateDatabase("my.db", MODE_PRIVATE, null);
+        history+=search+":\n";
+        /*SQLiteDatabase myDB = openOrCreateDatabase("my.db", MODE_PRIVATE, null);
         myDB.execSQL(
                 "CREATE TABLE IF NOT EXISTS history (description VARCHAR(200))"
         );
         ContentValues row1 = new ContentValues();
         row1.put("description", history);
-        myDB.insert("history", null, row1);
-        history="";
+        myDB.insert("history", null, row1);*/
+
         String url = "https://genelab-data.ndc.nasa.gov/genelab/data/search?term="+search+"&type=nih_geo_gse";
 
 
@@ -108,6 +108,15 @@ public class Search extends AppCompatActivity
                                 System.out.println("3malet recherche");
                                 if (catog.getExplanation() != null || catog.getExplanation() != ""){
                                     catog.setExplanation((String) b.get("Study Description"));
+                                    history+= catog.getExplanation() + "\n \n";
+                                    SQLiteDatabase myDB = openOrCreateDatabase("my.db", MODE_PRIVATE, null);
+                                    myDB.execSQL(
+                                            "CREATE TABLE IF NOT EXISTS history (description VARCHAR(200))"
+                                    );
+                                    ContentValues row1 = new ContentValues();
+                                    row1.put("description", history);
+                                    myDB.insert("history", null, row1);
+                                    history="";
                                     load();
                                 }
                                 else{

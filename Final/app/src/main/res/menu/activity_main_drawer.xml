@@ -15,18 +15,17 @@
             android:title="Search" />
 
         <item
-<<<<<<< HEAD
             android:id="@+id/nav_history"
             android:icon="@drawable/ic_history_black_24dp"
             android:title="History" />
-=======
+
         android:id="@+id/nav_history"
         android:title="History" />
 
         <item
             android:id="@+id/nav_rover"
             android:title="Mars Rover" />
->>>>>>> 47811d73fe0c65100c0aa5e70aca1e5fd00fe778
+
 
     </group>
 

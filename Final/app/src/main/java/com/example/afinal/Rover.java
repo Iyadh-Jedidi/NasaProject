@@ -3,6 +3,7 @@ package com.example.afinal;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -35,6 +36,8 @@ public class Rover extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
     private RequestQueue mQueue;
+    private TextInputEditText input;
+    String sol;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,7 @@ public class Rover extends AppCompatActivity
         Button buttonParse = findViewById(R.id.loadBtn);
 
         mQueue = Volley.newRequestQueue(this);
+        input = findViewById(R.id.sol);
 
         buttonParse.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,8 +70,8 @@ public class Rover extends AppCompatActivity
     }
 
     private void jsonParse() {
-
-        String url ="https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=1000&api_key=axzwR3f1fLgv6rJaG7LEJQRkr7I67qPRe8U2IOuz";
+        sol =input.getText().toString();
+        String url ="https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol="+sol+"&api_key=axzwR3f1fLgv6rJaG7LEJQRkr7I67qPRe8U2IOuz";
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
